@@ -1,0 +1,139 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: upf-config-map
+  namespace: open5gs
+data:
+  upfcfg.yaml: |
+    ################################################################################
+    # Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+    # contributor license agreements.
+    ################################################################################
+
+    # OAI UPF Configuration File
+
+    # Log level
+    log_level:
+      general: info
+
+    # SBI (Service-Based Interface) Settings
+    sbi:
+      server:
+        address: 0.0.0.0
+        port: 8805
+        http_version: 2
+      client:
+        address: open5gs-smf  # SMF service name in Kubernetes
+        port: 8080
+        api_version: v1
+
+    # N3 and N4 Network Configuration
+    interfaces:
+      n3:
+        if_name: n3
+        ipv4_address: 10.10.3.2/24  # IP assigned within n3network
+        network: n3network
+      n4:
+        if_name: n4
+        ipv4_address: 10.10.4.2/24  # IP assigned within n4network
+        network: n4network
+      n6:
+        if_name: n6
+        ipv4_address: 10.10.6.2/24  # IP assigned within n6network
+        network: n6network
+
+    # PFCP Configuration
+    pfcp:
+      node_id: 10.10.4.2  # This should match the N4 interface IP
+      local_ip: 10.10.4.2
+
+    # PDU Sessions Settings
+    pdu_sessions:
+      default_dnn: "streaming"  # Matches the SMF configuration
+      sNssai: 
+        sst: 2
+        sd: 000002  # Matches the SMF slice
+
+    # QoS and Traffic Steering Configuration
+    qos:
+      default_5qi: 9
+      max_bit_rate_ul: "100Mbps"  # Match SMF configuration
+      max_bit_rate_dl: "200Mbps"
+
+    # GTP-U Settings
+    gtpu:
+      forwarding:
+        enable: true
+        up_route:
+          route_n3: "10.10.3.0/24"   # N3 network traffic route
+          route_n6: "192.168.73.0/24"  # Route for N6 towards the external data network
+
+  upf.env: |
+    IF_1_IP=10.10.4.2
+    IF_1_TYPE=N4
+    IF_2_IP=10.10.3.2
+    IF_2_TYPE=N3
+    IF_2_NWI=access.oai.org
+    IF_3_IP=10.10.6.2
+    IF_3_TYPE=N6
+    IF_3_IP_REMOTE=192.168.73.135  # EXT-DN IP Address
+    IF_3_NWI=internet.oai.org
+    NAME=VPP-UPF
+    MNC=95
+    MCC=208
+    REALM=3gppnetwork.org
+    VPP_MAIN_CORE=0
+    VPP_CORE_WORKER=1
+    VPP_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/vpp_plugins/  # Ubuntu 18.04
+    SNSSAI_SD=000002  # Matches SMF slice configuration
+    SNSSAI_SST=2
+    DNN=streaming  # Matches the DNN from SMF configuration
+    REGISTER_NRF=yes
+    NRF_IP_ADDR=192.168.71.130  # Update if using a Kubernetes service name for NRF
+    NRF_PORT=8080
+    HTTP_VERSION=2
+  wrapper.sh: |
+    #!/bin/bash   
+    /openair-upf/bin/entrypoint.sh &
+
+    /openair-upf/run.sh
+  init.conf: |
+    ip table add 1
+    ip table add 2
+
+    create host-interface name @INTERFACE_CORE@
+    set interface mtu 1500 host-@INTERFACE_CORE@
+    set interface ip table host-@INTERFACE_CORE@ 1
+    set interface ip address host-@INTERFACE_CORE@ @INTERFACE_CORE@/24
+    set interface state host-@INTERFACE_CORE@ up
+
+    create host-interface name @INTERFACE_CP@
+    set interface mtu 1500 host-@INTERFACE_CP@
+    set interface ip table host-@INTERFACE_CP@ 0
+    set interface ip address host-@INTERFACE_CP@ @INTERFACE_CP@/24
+    set interface state host-@INTERFACE_CP@ up
+
+    create host-interface name @INTERFACE_ACCESS@
+    set interface mtu 1500 host-@INTERFACE_ACCESS@
+    set interface ip table host-@INTERFACE_ACCESS@ 2
+    set interface ip address host-@INTERFACE_ACCESS@ @INTERFACE_ACCESS@/24
+    set interface state host-@INTERFACE_ACCESS@ up
+
+    ip route add 0.0.0.0/0 table 2 via @N3_IPV4_ADDRESS_REMOTE@ host-n3
+    ip route add 0.0.0.0/0 table 0 via @N4_IPV4_ADDRESS_REMOTE@ host-n4
+    ip route add 0.0.0.0/0 table 1 via @N6_IPV4_ADDRESS_REMOTE@ host-n6
+
+    upf pfcp endpoint ip @N4_IPV4_ADDRESS_LOCAL@ vrf 0
+    upf node-id fqdn gw@GW_ID@.vppupf.node.5gcn.mnc@MNC03@.mcc@MCC@.@REALM@
+
+    upf nwi name @NWI_N3@ vrf 2
+    upf nwi name @NWI_N6@ vrf 1
+
+    upf specification release 16
+
+    upf gtpu endpoint ip @N3_IPV4_ADDRESS_LOCAL@ nwi @NWI_N3@ teid 0x000004d2/2
+
+
+    
+
+    

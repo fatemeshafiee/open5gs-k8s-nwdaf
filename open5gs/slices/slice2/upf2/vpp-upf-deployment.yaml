@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oai-upf
+  namespace: open5gs
+  labels:
+    app: oai-upf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oai-upf
+  template:
+    metadata:
+      labels:
+        app: oai-upf
+      annotations:
+        k8s.v1.cni.cncf.io/networks: '[{"name": "n3network", "interface": "n3", "ips": ["10.10.3.2/24"]}, {"name": "n4network", "interface": "n4", "ips": ["10.10.4.2/24"]}, {"name": "n6network", "interface": "n6", "ips": ["10.10.6.2/24"]}]'
+    spec:
+      containers:
+        - name: oai-upf
+          image: fatemehshafieiardestani/oai-vpp-upf:latest
+          resources:
+            limits:
+              hugepages-1Gi: "2Gi"
+              cpu: "500m"          # Limit CPU to 500 millicores (adjust as needed)
+              memory: "1Gi"        # Limit memory to 1Gi (adjust as needed)
+            requests:
+              hugepages-1Gi: "2Gi"
+              cpu: "500m"          # Request CPU resources
+              memory: "1Gi"
+          command: ["/openair-upf/wrapper.sh"]
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8805
+              protocol: UDP
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN", "NET_RAW", "SYS_RESOURCE", "IPC_LOCK"]  # Needed for network configurations
+            privileged: true
+          env:
+            - name: VPP_PLUGIN_PATH
+              value: "/usr/lib/x86_64-linux-gnu/vpp_plugins"
+          volumeMounts:
+            - name: upf-config-volume
+              mountPath: /openair-upf/etc/upfcfg.yaml
+              subPath: upfcfg.yaml
+            - name: upf-config-volume
+              mountPath: /openair-upf/wrapper.sh
+              subPath: wrapper.sh  
+            - name: upf-config-volume
+              mountPath: /openair-upf/etc/init.conf
+              subPath: init.conf
+            # - name: hugepage-memory
+            #   mountPath: /hugepages
+          envFrom:
+            - configMapRef:
+                name: upf-config-map
+          readinessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - -c
+                - "pgrep vpp"
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 5
+      volumes:
+        - name: upf-config-volume
+          configMap:
+            name: upf-config-map
+            items:
+            - key: upfcfg.yaml
+              path: upfcfg.yaml
+            - key: upf.env
+              path: upf.env
+            - key: wrapper.sh
+              path: wrapper.sh
+              mode: 0777
+            - key: init.conf
+              path: init.conf
+              mode: 0777
+        # - name: hugepage-memory
+        #   emptyDir: {}
+        #   medium: HugePages
+
+

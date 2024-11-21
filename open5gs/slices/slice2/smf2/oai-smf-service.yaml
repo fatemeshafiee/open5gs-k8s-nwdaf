@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oai-smf-service
+  namespace: open5gs
+spec:
+  selector:
+    app: oai-smf
+  ports:
+    - name: sbi-http  # Added name for each port
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    - name: sbi-8080  # Added name for each port
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    - name: pfcp-8805  # Added name for each port
+      protocol: UDP
+      port: 8805
+      targetPort: 8805
+  type: ClusterIP

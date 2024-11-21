@@ -14,7 +14,8 @@ RUN apt-get update \
 
 WORKDIR /open5gs
 
-RUN git clone -b v2.7.0 https://github.com/niloysh/open5gs .
+RUN git clone -b main https://fatemeshafiee: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@github.com/fatemeshafiee/open5gs .  && \ 
+git checkout c7c1ad6ecc767455e6aed31869c419ea595a5534 
 
 RUN meson build --prefix=/open5gs/install \
     && ninja -C build \

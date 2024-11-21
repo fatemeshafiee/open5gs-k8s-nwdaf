@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oai-smf
+  namespace: open5gs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oai-smf
+  template:
+    metadata:
+      labels:
+        app: oai-smf
+      annotations:
+        k8s.v1.cni.cncf.io/networks: '[
+          { "name": "n4network", "interface": "n4", "ips": [ "10.10.4.102/24" ] }
+          ]'
+    spec:
+      containers:
+        - name: oai-smf
+          image: oaisoftwarealliance/oai-smf:v2.1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              protocol: TCP
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8805
+              protocol: UDP
+          volumeMounts:
+            - name: ulcl-config
+              mountPath: /openair-smf/etc/config.yaml
+              subPath: config.yaml
+          env:
+            - name: TZ
+              value: "Europe/Paris"
+      volumes:
+        - name: ulcl-config
+          configMap:
+            name: smf-config-map

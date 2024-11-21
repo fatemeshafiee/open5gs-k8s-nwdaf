@@ -1,0 +1,124 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: smf-config-map
+  namespace: open5gs
+data:
+  config.yaml: |
+    ################################################################################
+    # Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+    # contributor license agreements.
+    ################################################################################
+    # OAI CN Configuration File
+
+    # Log level for all the NFs
+    log_level:
+      general: debug
+
+    # If you enable registration, the other NFs will use the NRF discovery mechanism
+    register_nf:
+      general: yes
+
+    http_version: 2
+
+    ############## SBI Interfaces
+    nfs:
+      amf:
+        host: open5gs-amf  
+        sbi:
+          port: 80          
+          api_version: v1
+          interface_name: eth0
+        n2:
+          interface_name: eth0
+          port: 38412
+      smf:
+        host: oai-smf
+        sbi:
+          port: 8080
+          api_version: v1
+          interface_name: eth0
+        n4:
+
+          interface_name: n4
+          port: 8805
+      udm:
+        host: open5gs-udm
+        sbi:
+          port: 80          
+          api_version: v1
+          interface_name: eth0
+      udr:
+        host: open5gs-udr  
+        sbi:
+          port: 80          
+          api_version: v1
+          interface_name: eth0
+      ausf:
+        host: open5gs-ausf  
+        sbi:
+          port: 80          
+          api_version: v1
+          interface_name: eth0
+      nrf:
+        host: nrf-nnrf  
+        sbi:
+          url: http://nrf-nnrf:80
+          port: 80          
+          api_version: v1
+          interface_name: eth0
+      pcf:
+        host: open5gs-pcf  
+        sbi:
+          port: 80          
+          api_version: v1
+          interface_name: eth0
+      nssf:
+        host: open5gs-nssf  
+        sbi:
+          port: 80          
+          api_version: v1
+          interface_name: eth0
+
+    ############## Database Configuration
+    # Updated to reflect MongoDB StatefulSet configuration
+    database:
+      host: mongodb.open5gs.svc.cluster.local 
+      user: open5gs
+      type: mongodb
+      password: open5gs
+      database_name: open5gs
+      generate_random: true
+      connection_timeout: 300 # seconds
+
+    smf:
+      ue_mtu: 1500
+      support_features:
+        use_local_subscription_info: yes
+        use_local_pcc_rules: yes
+      upfs:
+        - host: oai-upf  # Confirm this matches your actual UPF hostname in Kubernetes
+          config:
+            enable_usage_reporting: no
+      ue_dns:
+        primary_ipv4: "10.10.3.100"  
+        primary_ipv6: "2001:4860:4860::8888"
+        secondary_ipv4: "8.8.8.8"
+        secondary_ipv6: "2001:4860:4860::8888"
+      ims:
+        pcscf_ipv4: "10.10.3.231"  
+        pcscf_ipv6: "fe80::7915:f408:1787:db8b"
+      smf_info:
+        sNssaiSmfInfoList:
+          - sNssai: &streaming_slice
+              sst: 2
+              sd: 000002
+            dnnSmfInfoList:
+              - dnn: "streaming"  
+      local_subscription_infos:
+        - single_nssai: *streaming_slice
+          dnn: "streaming"  
+          qos_profile:
+            5qi: 9
+            session_ambr_ul: "100Mbps"
+            session_ambr_dl: "200Mbps"

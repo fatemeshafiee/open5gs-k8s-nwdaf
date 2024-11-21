@@ -1,3 +1,3 @@
 resources:
-- upf-deployment.yaml
-- upf-configmap.yaml
+- vpp-upf-deployment.yaml
+- vpp-upf-configmap.yaml
