@@ -1,0 +1,4 @@
+resources:
+  - engine-ddos-deployment.yaml
+  - engine-ddos-service.yaml
+

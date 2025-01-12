@@ -1,4 +1,4 @@
 resources:
-- oai-smf-deployment.yaml
-- oai-smf-service.yaml
-- oai-smf-configmap.yaml
+- smf-deployment.yaml
+- smf-service.yaml
+- smf-configmap.yaml

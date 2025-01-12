@@ -1,0 +1,3 @@
+resources:
+  - nbi-ml-deployment.yaml
+  - nbi-ml-service.yaml

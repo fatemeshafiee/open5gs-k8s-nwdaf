@@ -1,0 +1,4 @@
+resources:
+  - engine-vddos-deployment.yaml
+  - engine-vddos-service.yaml
+

@@ -20,6 +20,10 @@ spec:
       port: 3868
     - name: diameter-over
       port: 5868
+    - name: ee
+      port: 8081       # The port that other pods will use to reach the UPF
+      targetPort: 8081 # The port the UPF container is actually listening on
+      protocol: TCP
   selector:
     app: open5gs
     nf: smf

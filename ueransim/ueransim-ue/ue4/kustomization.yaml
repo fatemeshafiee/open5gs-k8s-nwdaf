@@ -1,0 +1,8 @@
+resources:
+- ue-deployment.yaml
+
+configMapGenerator:
+  - name: ue4-configmap
+    files:
+      - ue4.yaml
+      - wrapper.sh

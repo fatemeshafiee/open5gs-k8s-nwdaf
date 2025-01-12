@@ -21,7 +21,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # Install runtime dependencies + debug tools
 RUN apt-get update \
-    && apt-get install libsctp-dev lksctp-tools iproute2 iputils-ping -y \
+    && apt-get install libsctp-dev lksctp-tools iproute2 iputils-ping curl hping3 -y \
     && apt-get install vim iperf3 net-tools tcpdump -y \
     && apt-get clean
 

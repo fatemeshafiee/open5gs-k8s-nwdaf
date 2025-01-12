@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - smf2
   - upf2
+  - testsmf

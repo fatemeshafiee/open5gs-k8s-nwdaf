@@ -1,0 +1,4 @@
+resources:
+  - nbi-gateway-configmap.yaml
+  - nbi-gateway-deployment.yaml
+  - nbi-gateway-service.yaml

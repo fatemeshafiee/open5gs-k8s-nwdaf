@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oai-nwdaf-nbi-gateway
+  namespace: open5gs
+  labels:
+    app: oai-nwdaf-nbi-gateway
+spec:
+  selector:
+    matchLabels:
+      app: oai-nwdaf-nbi-gateway
+  template:
+    metadata:
+      labels:
+        app: oai-nwdaf-nbi-gateway
+    spec:
+      containers:
+        - name: oai-nwdaf-nbi-gateway
+          image: kong:latest
+          ports:
+            - containerPort: 8000
+            - containerPort: 8443
+            - containerPort: 8001
+          env:
+            - name: KONG_ADMIN_LISTEN
+              value: 0.0.0.0:8001
+            - name: KONG_DATABASE
+              value: "off"
+            - name: KONG_DECLARATIVE_CONFIG
+              value: /kong/declarative/kong.yml
+            - name: KONG_PROXY_LISTEN
+              value: 0.0.0.0:8000
+            - name: KONG_PROXY_LISTEN_SSL
+              value: 0.0.0.0:8443
+          volumeMounts:
+            - name: kong-config
+              mountPath: /kong/declarative/
+      volumes:
+        - name: kong-config
+          configMap:
+            name: kong-config

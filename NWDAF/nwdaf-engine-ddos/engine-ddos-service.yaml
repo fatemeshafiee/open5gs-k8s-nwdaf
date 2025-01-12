@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nwdaf-engine-ddos
+  namespace: open5gs
+  labels:
+    app: nwdaf-engine-ddos
+spec:
+  type: ClusterIP
+  selector:
+    app: nwdaf-engine-ddos
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

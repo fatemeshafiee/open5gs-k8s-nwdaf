@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oai-nwdaf-nbi-events
+  namespace: open5gs
+  labels:
+    app: oai-nwdaf-nbi-events
+spec:
+  type: ClusterIP
+  selector:
+    app: oai-nwdaf-nbi-events
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

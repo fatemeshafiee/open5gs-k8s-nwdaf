@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oai-nwdaf-nbi-ml
+  namespace: open5gs
+  labels:
+    app: oai-nwdaf-nbi-ml
+spec:
+  selector:
+    matchLabels:
+      app: oai-nwdaf-nbi-ml
+  template:
+    metadata:
+      labels:
+        app: oai-nwdaf-nbi-ml
+    spec:
+      containers:
+        - name: oai-nwdaf-nbi-ml
+          image: fatemehshafieiardestani/oai-nwdaf-nbi-ml:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SERVER_ADDR
+              value: 0.0.0.0:8080 

@@ -1,0 +1,4 @@
+resources:
+  - engine-ads-deployment.yaml
+  - engine-ads-service.yaml
+

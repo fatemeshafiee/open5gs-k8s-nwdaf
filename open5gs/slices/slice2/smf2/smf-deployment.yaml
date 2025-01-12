@@ -40,7 +40,7 @@ spec:
               "until nc -z $DEPENDENCIES; do echo waiting for the AUSF; sleep 2; done;",
             ]
       containers:
-        - image: ghcr.io/niloysh/open5gs:v2.6.4-aio
+        - image: ghcr.io/fatemeshafiee/open5gs:v2.7.6
           name: smf
           imagePullPolicy: Always
           ports:
@@ -49,6 +49,9 @@ spec:
             - name: pfcp
               containerPort: 8805
               protocol: UDP
+            - name: ee
+              containerPort: 8081
+              protocol: TCP
           command: ["./open5gs-smfd"]
           args: ["-c", "/open5gs/config/smfcfg.yaml"]
           env:

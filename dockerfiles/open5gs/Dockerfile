@@ -2,6 +2,13 @@ FROM ubuntu:22.04 AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LD_LIBRARY_PATH=/open5gs/install/lib/x86_64-linux-gnu
+WORKDIR /microhttpd-build
+RUN apt-get update && apt-get install -y wget
+RUN apt-get install binutils binutils-common -y
+RUN apt-get install make build-essential -y
+RUN wget https://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-1.0.1.tar.gz
+RUN tar -xzvf libmicrohttpd-1.0.1.tar.gz
+RUN (cd libmicrohttpd-1.0.1 && ./configure && make install)
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -11,15 +18,18 @@ RUN apt-get update \
     libidn11-dev libmongoc-dev libbson-dev libyaml-dev \
     libnghttp2-dev libmicrohttpd-dev libcurl4-gnutls-dev \
     libtins-dev libtalloc-dev meson
-
+RUN apt-get update && \
+    apt-get install -y make nginx libjansson-dev gdb libcurl4-openssl-dev libcurl4-openssl-dev
 WORKDIR /open5gs
 
-RUN git clone -b main https://fatemeshafiee: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@github.com/fatemeshafiee/open5gs .  && \ 
-git checkout c7c1ad6ecc767455e6aed31869c419ea595a5534 
+RUN git clone -b main https://fatemeshafiee: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@github.com/fatemeshafiee/open5gs .  && \ 
+git checkout bf093d430b4e095e66ea79d55623322741e34607
 
-RUN meson build --prefix=/open5gs/install \
-    && ninja -C build \
-    && ninja -C build install
+ENV CFLAGS="-Wno-error"
+ENV CXXFLAGS="-Wno-error"
+RUN meson build --prefix=/open5gs/install -DfreeDiameter:werror=false -Dprometheus-client-c:werror=false \
+    && CFLAGS="-Wno-error" CXXFLAGS="-Wno-error" ninja -C build \
+    && CFLAGS="-Wno-error" CXXFLAGS="-Wno-error" ninja -C build install
 
 FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
@@ -33,6 +43,19 @@ RUN apt-get update \
     libtins-dev libtalloc-dev ca-certificates \
     vim tcpdump iputils-ping iproute2 iptables \
     && apt-get autoremove -y && apt-get autoclean
+
+RUN apt-get install binutils binutils-common -y
+RUN apt-get install make build-essential -y
+RUN apt-get install wget -y
+
+
+WORKDIR /microhttpd-build
+RUN wget https://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-1.0.1.tar.gz
+RUN tar -xzvf libmicrohttpd-1.0.1.tar.gz
+RUN (cd libmicrohttpd-1.0.1 && ./configure && make install)
+
+RUN apt-get install libjansson-dev  -y
+RUN apt-get install libcurl4-openssl-dev libcurl4-openssl-dev  -y
 
 RUN mkdir -p /open5gs/install
 RUN update-ca-certificates

@@ -1,0 +1,3 @@
+resources:
+  - database-deployment.yaml
+  - database-service.yaml

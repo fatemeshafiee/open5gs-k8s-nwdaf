@@ -1,0 +1,38 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nwdaf-engine-vddos
+  namespace: open5gs
+  labels:
+    app: nwdaf-engine-vddos
+spec:
+  selector:
+    matchLabels:
+      app: nwdaf-engine-vddos
+  template:
+    metadata:
+      labels:
+        app: nwdaf-engine-vddos
+    spec:
+      containers:
+        - name: nwdaf-engine-vddos
+          image: fatemehshafieiardestani/nwdaf-engine-vddos:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ENGINE_VDDOS_DETECTION
+              value: /abnormal_behaviour/vddos
+            - name: MONGODB_COLLECTION_NAME_AMF
+              value: amf
+            - name: MONGODB_COLLECTION_NAME_SMF
+              value: smf
+            - name: MONGODB_COLLECTION_NAME_UPF
+              value: upf
+            - name: MONGODB_DATABASE_NAME
+              value: testing
+            - name: MONGODB_URI
+              value: mongodb://oai-nwdaf-database:27017
+            - name: SERVER_PORT
+              value: "8080"

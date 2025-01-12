@@ -4,9 +4,5 @@ kind: Kustomization
 namespace: open5gs
 
 resources:
-  - ue1
-  - ue2
-  - ue3
-  - ue4
-  - ue5
-  - ue6
+  - target-deployment.yaml
+  - target-service.yaml

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: target-server
+spec:
+  selector:
+    app: target-server
+  # NodePort exposes it on <node-ip>:<nodePort>
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 8080       
+    targetPort: 8080  

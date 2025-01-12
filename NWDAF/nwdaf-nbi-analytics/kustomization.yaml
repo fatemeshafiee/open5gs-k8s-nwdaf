@@ -1,0 +1,3 @@
+resources:
+  - nbi-analytics-deployment.yaml
+  - nbi-analytics-service.yaml

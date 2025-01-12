@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: target-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: target-server
+  template:
+    metadata:
+      labels:
+        app: target-server
+    spec:
+      containers:
+      - name: target-server
+        # Replace with your actual image and tag
+        image: ghcr.io/fatemeshafiee/target_server:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080  # The port your app listens on (if any)

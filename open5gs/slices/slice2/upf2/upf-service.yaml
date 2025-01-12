@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: upf2-service
+  namespace: open5gs
+  labels:
+    app: open5gs
+    nf: upf
+    name: upf2
+spec:
+  selector:
+    app: open5gs
+    nf: upf
+    name: upf2
+  ports:
+    - name: ee
+      port: 4355       # The port that other pods will use to reach the UPF
+      targetPort: 4355 # The port the UPF container is actually listening on
+      protocol: TCP
+  type: ClusterIP

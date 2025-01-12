@@ -37,7 +37,7 @@ spec:
         command: ["sh", "-c", "until nc -z $DEPENDENCIES; do echo waiting for the SMF; sleep 2; done;"]
       containers:
       - name: upf
-        image: ghcr.io/niloysh/open5gs:v2.6.4-aio
+        image: ghcr.io/fatemeshafiee/open5gs:v2.7.6
         imagePullPolicy: Always
         command: [ "/open5gs/config/wrapper.sh" ]
         volumeMounts:
@@ -47,6 +47,9 @@ spec:
         - containerPort: 8805
           name: n4
           protocol: UDP
+        - containerPort: 4355
+          name: ee
+          protocol: TCP
         resources:
           requests:
             memory: "256Mi"
