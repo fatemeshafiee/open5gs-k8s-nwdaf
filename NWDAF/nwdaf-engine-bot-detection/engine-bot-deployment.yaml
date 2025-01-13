@@ -1,0 +1,38 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nwdaf-engine-bot-detection
+  namespace: open5gs
+  labels:
+    app: nwdaf-engine-bot-detection
+spec:
+  selector:
+    matchLabels:
+      app: nwdaf-engine-bot-detection
+  template:
+    metadata:
+      labels:
+        app: nwdaf-engine-bot-detection
+    spec:
+      containers:
+        - name: nwdaf-engine-bot-detection
+          image: fatemehshafieiardestani/nwdaf-engine-bot-detection:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ENGINE_BOT_DETECTION
+              value: /abnormal_behaviour/suspicion_of_ddos_attack
+            - name: MONGODB_COLLECTION_NAME_AMF
+              value: amf
+            - name: MONGODB_COLLECTION_NAME_SMF
+              value: smf
+            - name: MONGODB_COLLECTION_NAME_UPF
+              value: upf
+            - name: MONGODB_DATABASE_NAME
+              value: testing
+            - name: MONGODB_URI
+              value: mongodb://oai-nwdaf-database:27017
+            - name: SERVER_PORT
+              value: "8080"

@@ -1,0 +1,4 @@
+resources:
+  - engine-bot-deployment.yaml
+  - engine-bot-service.yaml
+

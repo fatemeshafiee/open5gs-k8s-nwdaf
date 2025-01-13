@@ -23,10 +23,10 @@ data:
           scp:
             - uri: http://scp-nscp:80
           nsi:
-            - uri: http://nrf-nnrf:80
-              s_nssai:
-                sst: 1
-                sd: 000001
+            # - uri: http://nrf-nnrf:80
+            #   s_nssai:
+            #     sst: 1
+            #     sd: 000001
             - uri: http://nrf-nnrf:80
               s_nssai:
                 sst: 2

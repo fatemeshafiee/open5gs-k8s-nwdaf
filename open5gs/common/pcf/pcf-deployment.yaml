@@ -21,9 +21,9 @@ spec:
       - name: wait-smf1
         image: busybox:1.32.0
         env:
-        - name: DEPENDENCIES
-          value: smf1-nsmf:80
-        command: ["sh", "-c", "until nc -z $DEPENDENCIES; do echo waiting for the SMF; sleep 2; done;"]
+        # - name: DEPENDENCIES
+        #   value: smf1-nsmf:80
+        # command: ["sh", "-c", "until nc -z $DEPENDENCIES; do echo waiting for the SMF; sleep 2; done;"]
       - name: wait-smf2
         image: busybox:1.32.0
         env:
