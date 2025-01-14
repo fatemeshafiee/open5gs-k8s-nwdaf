@@ -41,7 +41,7 @@ spec:
               value: http://oai-nwdaf-engine-ads:8080
             - name: ENGINE_DDOS_URI
               value: http://nwdaf-engine-ddos:8080
-            - name: ENGINE_BOT_URI
+            - name: ENGINE_BOT_DETECTION_URI
               value: http://nwdaf-engine-bot-detection:8080
             - name: SERVER_ADDR
               value: 0.0.0.0:8080 

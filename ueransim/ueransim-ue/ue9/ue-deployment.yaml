@@ -2,24 +2,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ueransim-ue4
+  name: ueransim-ue9
   labels:
     app: ueransim
     component: ue
-    name: ue4
+    name: ue9
 spec:
   selector:
     matchLabels:
       app: ueransim
       component: ue
-      name: ue4
+      name: ue9
   replicas: 1
   template:
     metadata:
       labels:
         app: ueransim
         component: ue
-        name: ue4
+        name: ue9
     spec:
       initContainers:
       - name: wait-gnb
@@ -53,10 +53,10 @@ spec:
       volumes:
         - name: ue-volume
           configMap:
-            name: ue4-configmap
+            name: ue9-configmap
             items:
-              - key: ue4.yaml
-                path: ue4.yaml
+              - key: ue9.yaml
+                path: ue9.yaml
               - key: wrapper.sh
                 path: wrapper.sh
                 mode: 0755

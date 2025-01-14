@@ -37,7 +37,7 @@ spec:
         command: ["sh", "-c", "until nc -z $DEPENDENCIES; do echo waiting for the SMF; sleep 2; done;"]
       containers:
       - name: upf
-        image: ghcr.io/fatemeshafiee/open5gs:v2.7.6
+        image: ghcr.io/fatemeshafiee/open5gs:v2.7.8
         imagePullPolicy: Always
         command: [ "/open5gs/config/wrapper.sh" ]
         volumeMounts:

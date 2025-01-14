@@ -40,7 +40,7 @@ spec:
               "until nc -z $DEPENDENCIES; do echo waiting for the AUSF; sleep 2; done;",
             ]
       containers:
-        - image: ghcr.io/fatemeshafiee/open5gs:v2.7.6
+        - image: ghcr.io/fatemeshafiee/open5gs:v2.7.8
           name: smf
           imagePullPolicy: Always
           ports:

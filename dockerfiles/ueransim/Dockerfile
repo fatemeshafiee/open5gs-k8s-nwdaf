@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # Install dependencies
 RUN apt-get update \
-    && apt-get install libsctp-dev lksctp-tools iproute2 -y \
+    && apt-get install libsctp-dev lksctp-tools iproute2  -y \
     && wget https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-linux-x86_64.sh -O cmake_installer.sh \
     && chmod +x cmake_installer.sh \
     && ./cmake_installer.sh --skip-license \
@@ -21,12 +21,13 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # Install runtime dependencies + debug tools
 RUN apt-get update \
-    && apt-get install libsctp-dev lksctp-tools iproute2 iputils-ping curl hping3 -y \
+    && apt-get install libsctp-dev lksctp-tools iproute2 iputils-ping curl git hping3 -y \
     && apt-get install vim iperf3 net-tools tcpdump -y \
     && apt-get clean
 
 WORKDIR /ueransim
-
+RUN apt-get update \
+    && git clone https://github.com/fatemeshafiee/traffic.git
 RUN mkdir -p config/ binder/
 
 COPY /app/* ./
