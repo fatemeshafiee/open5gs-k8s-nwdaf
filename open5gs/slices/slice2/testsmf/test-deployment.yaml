@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: server1
-        image: fatemehshafieiardestani/server-1:latest
+        image: fatemehshafieiardestani/test_smf:latest
         ports:
         - containerPort: 5000
