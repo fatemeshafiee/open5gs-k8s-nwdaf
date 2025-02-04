@@ -19,9 +19,9 @@ data:
           - /nnwdaf-analyticsinfo/v1/analytics
 
     - name: oai-nwdaf-nbi-events
-      url: http://oai-nwdaf-nbi-events:8080/nnwdaf-eventssubscription/v1
+      url: http://nwdaf-nbi-events:8080/nnwdaf-eventssubscription/v1
       routes:
-        - name: oai-nwdaf-nbi-events-route
+        - name: nwdaf-nbi-events-route
           hosts:
           - oai-nwdaf-nbi-gateway
           paths:

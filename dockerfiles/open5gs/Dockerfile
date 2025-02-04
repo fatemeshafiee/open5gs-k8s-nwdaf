@@ -23,7 +23,7 @@ RUN apt-get update && \
 WORKDIR /open5gs
 
 RUN git clone -b main https://fatemeshafiee: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@github.com/fatemeshafiee/open5gs .  && \ 
-git checkout 8eb5a183f460dfaefa221ebe42bb39a29d61cd25
+git checkout c69b9b6244f63fa3a8a16689056611b4cec86ef3
 
 ENV CFLAGS="-Wno-error"
 ENV CXXFLAGS="-Wno-error"

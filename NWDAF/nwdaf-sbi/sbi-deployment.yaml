@@ -27,23 +27,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: oai-nwdaf-sbi
+  name: nwdaf-sbi
   namespace: open5gs
   labels:
-    app: oai-nwdaf-sbi
+    app: nwdaf-sbi
 spec:
   selector:
     matchLabels:
-      app: oai-nwdaf-sbi
+      app: nwdaf-sbi
   template:
     metadata:
       labels:
-        app: oai-nwdaf-sbi
+        app: nwdaf-sbi
     spec:
       imagePullSecrets:
         - name: my-registry-secret
       containers:
-        - name: oai-nwdaf-sbi
+        - name: nwdaf-sbi
           image: fatemehshafieiardestani/oai-nwdaf-sbi:latest
           imagePullPolicy: Always
           ports:
@@ -98,8 +98,8 @@ spec:
             - name: MONGODB_DATABASE_NAME
               value: "testing"
             - name: MONGODB_URI
-              value: "mongodb://oai-nwdaf-database:27017"
+              value: "mongodb://nwdaf-database:27017"
             - name: EVENT_NOTIFY_URI
-              value: "http://oai-nwdaf-sbi:8080"
+              value: "http://nwdaf-sbi:8080" 
             - name: SERVER_ADDR
               value: "0.0.0.0:8080"

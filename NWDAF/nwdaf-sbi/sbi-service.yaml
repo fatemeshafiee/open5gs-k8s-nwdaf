@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: oai-nwdaf-sbi
+  name: nwdaf-sbi
   namespace: open5gs
   labels:
-    app: oai-nwdaf-sbi
+    app: nwdaf-sbi
 spec:
   type: ClusterIP
   selector:
-    app: oai-nwdaf-sbi
+    app: nwdaf-sbi
   ports:
     - protocol: TCP
       port: 8080

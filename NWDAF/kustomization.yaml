@@ -1,13 +1,13 @@
 resources:
   - nwdaf-database
-  - nwdaf-engine
-  - nwdaf-engine-ads
-  - nwdaf-engine-ddos
-  - nwdaf-engine-vddos
-  - nwdaf-nbi-analytics
+  # - nwdaf-engine
+  # - nwdaf-engine-ads
+  # - nwdaf-engine-ddos
+  # - nwdaf-engine-vddos
+  # - nwdaf-nbi-analytics
   - nwdaf-nbi-events
   - nwdaf-nbi-gateway
-  - nwdaf-nbi-ml
+  # - nwdaf-nbi-ml
   - nwdaf-sbi
   - nwdaf-engine-bot-detection
 

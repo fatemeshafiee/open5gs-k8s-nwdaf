@@ -33,6 +33,6 @@ spec:
             - name: MONGODB_DATABASE_NAME
               value: testing
             - name: MONGODB_URI
-              value: mongodb://oai-nwdaf-database:27017
+              value: mongodb://nwdaf-database:27017
             - name: SERVER_PORT
               value: "8080"

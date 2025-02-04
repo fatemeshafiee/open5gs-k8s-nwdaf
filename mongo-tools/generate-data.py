@@ -8,8 +8,8 @@ yaml = YAML()
 ######################### CONFIGURATION ###################################
 DEFAULT_CONFIG = {
     "NUM_SLICES": 2,  # Number of network slices to create
-    "NUM_COTS_SUBSCRIBERS": 0,  # Number of COTS subscribers
-    "NUM_SAMPLE_SUBSCRIBERS": 6,  # Number of simulated subscribers
+    "NUM_COTS_SUBSCRIBERS": 2,  # Number of COTS subscribers
+    "NUM_SAMPLE_SUBSCRIBERS": 3,  # Number of simulated subscribers
     "NUM_AUTO_GENERATED_SUBSCRIBERS": 0,  # Number of auto-generated subscribers (for MSD deployment only)
     "DEFAULT_UPLINK_SPEED": {"value": 1, "unit": Open5GS.Unit.Gbps},
     "DEFAULT_DOWNLINK_SPEED": {"value": 1, "unit": Open5GS.Unit.Gbps},
@@ -17,7 +17,7 @@ DEFAULT_CONFIG = {
     "DEFAULT_ARP_VALUES": {
         "priority_level": 8,
         "pre_emption_capability": Open5GS.Status.DISABLED,
-        "pre_emption_vulnerability": Open5GS.Status.DISABLED,
+        "pre_emption_ƒavulnerability": Open5GS.Status.DISABLED,
     },
     "DEFAULT_KEY": "465B5CE8B199B49FAA5F0A2EE238A6BC",
     "DEFAULT_OPC": "E8ED289DEBA952E4283B54E88E6183CA",
@@ -214,7 +214,7 @@ cots_subscriber_data = {
         "network_access_mode": 0,
         "subscriber_status": 0,
         "access_restriction_data": 32,
-        "slice": [slice_data["slice_1"]],
+        "slice": [slice_data["slice_2"]],
         "ambr": {
             "uplink": {"value": 1, "unit": Open5GS.Unit.Gbps},
             "downlink": {"value": 1, "unit": Open5GS.Unit.Gbps},

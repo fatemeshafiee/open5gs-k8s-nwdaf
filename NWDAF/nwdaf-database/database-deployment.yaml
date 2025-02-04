@@ -27,21 +27,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: oai-nwdaf-database
+  name: nwdaf-database
   namespace: open5gs
   labels:
-    app: oai-nwdaf-database
+    app: nwdaf-database
 spec:
   selector:
     matchLabels:
-      app: oai-nwdaf-database
+      app: nwdaf-database
   template:
     metadata:
       labels:
-        app: oai-nwdaf-database
+        app: nwdaf-database
     spec:
       containers:
-        - name: oai-nwdaf-database
+        - name: nwdaf-database
           image: mongo:latest
           imagePullPolicy: Always
           ports:

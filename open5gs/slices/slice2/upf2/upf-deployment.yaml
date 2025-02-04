@@ -52,11 +52,11 @@ spec:
           protocol: TCP
         resources:
           requests:
-            memory: "256Mi"
-            cpu: "200m"
-          limits:
             memory: "512Mi"
-            cpu: "500m"
+            cpu: "1500m"
+          limits:
+            memory: "1024Mi"
+            cpu: "2000m"
         securityContext:
           privileged: true
       restartPolicy: Always

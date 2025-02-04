@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: oai-nwdaf-nbi-events
+  name: nwdaf-nbi-events
   namespace: open5gs
   labels:
-    app: oai-nwdaf-nbi-events
+    app: nwdaf-nbi-events
 spec:
   selector:
     matchLabels:
-      app: oai-nwdaf-nbi-events
+      app: nwdaf-nbi-events
   template:
     metadata:
       labels:
-        app: oai-nwdaf-nbi-events
+        app: nwdaf-nbi-events
     spec:
       containers:
-        - name: oai-nwdaf-nbi-events
+        - name: nwdaf-nbi-events
           image: fatemehshafieiardestani/oai-nwdaf-nbi-events:latest
           imagePullPolicy: Always
           ports:
