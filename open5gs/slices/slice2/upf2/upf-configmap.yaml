@@ -39,5 +39,7 @@ data:
     ip link set ogstun up;
     sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward";
     iptables -t nat -A POSTROUTING -s 10.42.0.0/16 ! -o ogstun -j MASQUERADE;
+    tail -f /dev/null
+    # /open5gs/install/bin/open5gs-upfd -c /open5gs/config/upfcfg.yaml -d
+    # exec gdb --args /open5gs/install/bin/open5gs-upfd -c /open5gs/config/upfcfg.yaml -d
 
-    /open5gs/install/bin/open5gs-upfd -c /open5gs/config/upfcfg.yaml

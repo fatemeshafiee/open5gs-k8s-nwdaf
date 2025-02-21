@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlflow
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mlflow
+  template:
+    metadata:
+      labels:
+        app: mlflow
+    spec:
+      containers:
+      - name: mlflow
+        image: fatemehshafieiardestani/mlflow:latest 
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MLFLOW_BACKEND_STORE_URI
+          value: "postgresql://mlflow:mlflowpassword@postgresql-svc:5432/mlflowdb"
+        - name: MLFLOW_TRACKING_URI
+          value: "http://mlflow-svc.open5gs:5000"
+        - name: MLFLOW_ARTIFACT_ROOT
+          value: "/app/mlruns"
+        - name: MLFLOW_DEFAULT_ARTIFACT_ROOT
+          value: "file:///mlflow_artifacts"
+        volumeMounts:
+        - name: mlflow-artifacts
+          mountPath: /mlflow_artifacts
+      volumes:
+      - name: mlflow-artifacts
+        persistentVolumeClaim:
+          claimName: mlflow-pvc

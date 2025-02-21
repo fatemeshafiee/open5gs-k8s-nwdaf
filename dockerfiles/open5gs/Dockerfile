@@ -23,7 +23,7 @@ RUN apt-get update && \
 WORKDIR /open5gs
 
 RUN git clone -b main https://fatemeshafiee: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@github.com/fatemeshafiee/open5gs .  && \ 
-git checkout c69b9b6244f63fa3a8a16689056611b4cec86ef3
+git checkout 9f561daa2b36486c9e709c4f6447bb134f49244b
 
 ENV CFLAGS="-Wno-error"
 ENV CXXFLAGS="-Wno-error"
@@ -41,7 +41,7 @@ RUN apt-get update \
     libidn11-dev libmongoc-dev libbson-dev libyaml-dev \
     libnghttp2-dev libmicrohttpd-dev libcurl4-gnutls-dev \
     libtins-dev libtalloc-dev ca-certificates \
-    vim tcpdump iputils-ping iproute2 iptables \
+    vim tcpdump iputils-ping iproute2 iptables gdb\
     && apt-get autoremove -y && apt-get autoclean
 
 RUN apt-get install binutils binutils-common -y
