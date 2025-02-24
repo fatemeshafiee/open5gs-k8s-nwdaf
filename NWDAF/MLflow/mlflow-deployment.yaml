@@ -14,18 +14,22 @@ spec:
     spec:
       containers:
       - name: mlflow
-        image: fatemehshafieiardestani/mlflow:latest 
+        image: fatemehshafieiardestani/my-fastapi-mlflow-app:latest
         ports:
         - containerPort: 5000
+        - containerPort: 8000
+        - containerPort: 5001
         env:
         - name: MLFLOW_BACKEND_STORE_URI
           value: "postgresql://mlflow:mlflowpassword@postgresql-svc:5432/mlflowdb"
         - name: MLFLOW_TRACKING_URI
-          value: "http://mlflow-svc.open5gs:5000"
+          value: "http://mlflow-svc:5000"
         - name: MLFLOW_ARTIFACT_ROOT
-          value: "/app/mlruns"
+          value: "/mlflow_artifacts"
         - name: MLFLOW_DEFAULT_ARTIFACT_ROOT
           value: "file:///mlflow_artifacts"
+        - name: GUNICORN_CMD_ARGS  # Ensure MLflow serves models properly
+          value: "--timeout 180 --workers 2"
         volumeMounts:
         - name: mlflow-artifacts
           mountPath: /mlflow_artifacts

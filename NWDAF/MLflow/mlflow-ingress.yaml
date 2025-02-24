@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-ingress  
+spec:
+  rules:
+  - host: mlflow.open5gs  
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: mlflow-svc  
+            port:
+              number: 5000
+      - path: /models/ 
+        pathType: Prefix
+        backend:
+          service:
+            name: mlflow-svc
+            port:
+              number: 5001
+  - host: modelprov.open5gs
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: modelprov-svc
+            port:
+              number: 8000

@@ -3,9 +3,25 @@ kind: Service
 metadata:
   name: mlflow-svc
 spec:
-  ports:
-  - port: 5000
-    targetPort: 5000
   selector:
     app: mlflow
-  type: ClusterIP 
+  ports:
+  - name: tracking  
+    port: 5000
+    targetPort: 5000
+  - name: serving  
+    port: 5001
+    targetPort: 5001
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: modelprov-svc
+spec:
+  selector:
+    app: mlflow
+  ports:
+  - port: 8000
+    targetPort: 8000
+  type: LoadBalancer

@@ -2,6 +2,7 @@ resources:
   - mlflow-deployment.yaml
   - mlflow-pvc.yaml
   - mlflow-service.yaml
+  - mlflow-ingress.yaml
   - postgresql-deployment.yaml
   - postgresql-pvc.yaml
   - postgresql-svc.yaml
