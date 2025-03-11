@@ -15,6 +15,7 @@ spec:
       containers:
       - name: mlflow
         image: fatemehshafieiardestani/my-fastapi-mlflow-app:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
         - containerPort: 8000
