@@ -4,7 +4,7 @@ from logger import log
 
 
 def add_admin_account():
-    client = MongoClient("mongodb://localhost:27017/")
+    client = MongoClient("mongodb://localhost:27018/")
     db = client["open5gs"]
     collection = db["accounts"]
 

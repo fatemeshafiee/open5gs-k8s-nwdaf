@@ -19,7 +19,7 @@ run_setup() {
     "cd /home/f2shafie/testbed-automator"
     "./uninstall.sh"
     "./install.sh"
-    "cd /home/f2shafie/open5gs-k8s"
+    "cd /home/f2shafie/open5gs-k8s-nwdaf"
     "kubectl create namespace open5gs"
   )
 

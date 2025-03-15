@@ -16,7 +16,7 @@ def run_with_port_forwarding(script):
             "service/mongodb",
             "-n",
             NAMESPACE,
-            "27017:27017",
+            "27018:27017",
         ]
         port_forward_process = subprocess.Popen(port_forward_command, stdout=subprocess.DEVNULL)
         time.sleep(5)
