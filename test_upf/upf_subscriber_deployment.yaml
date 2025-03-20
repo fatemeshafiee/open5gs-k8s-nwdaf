@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: upf-subscriber
+  namespace: open5gs
+  labels:
+    app: upf-subscriber
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: upf-subscriber
+  template:
+    metadata:
+      labels:
+        app: upf-subscriber
+    spec:
+      containers:
+      - name: upf-subscriber
+        image: fatemehshafieiardestani/upf_subscriber:latest
+        env:
+        - name: SUBSCRIPTION_URL
+          value: "http://upf2-service.open5gs.svc.cluster.local:4355/nupf-ee/v1/ee-subscriptions"
+        - name: LISTEN_PORT
+          value: "5000"
+        ports:
+        - containerPort: 5000

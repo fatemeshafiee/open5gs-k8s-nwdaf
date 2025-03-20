@@ -7,7 +7,7 @@ from ruamel.yaml import YAML
 from functools import partial
 
 MONGO_URI = "localhost"
-MONGO_PORT = 27017
+MONGO_PORT = 27018
 DATA_DIR = "data"
 
 yaml = YAML()
