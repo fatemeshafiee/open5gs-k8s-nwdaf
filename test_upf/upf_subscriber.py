@@ -32,7 +32,7 @@ def start_http_server():
     httpd.serve_forever()
 
 def subscribe():
-    callback_url = "http://<YOUR-CALLBACK-IP-OR-HOST>:<YOUR-PORT>/"
+    callback_url = f"http://{get_pod_ip()}:{LISTEN_PORT}/"
 
     request_string = (
         '{'
