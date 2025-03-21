@@ -7,7 +7,7 @@ fi
 
 directory_name=$1
 namespace="open5gs"
-server_ip="129.97.168.65"  
+server_ip="129.97.168.51"  
 
 check_pods_running() {
   local label=$1
@@ -69,7 +69,7 @@ for i in $(seq 1 10); do
     port=$((5000 + j))
     echo "Detected UE IP from the UPF container: $UE_IP"
     kubectl exec "$pod_name" -n "$namespace" -- \
-        iperf3 -c "$server_ip" -p "$port" -t 10 -u -b 20M -P 1 -B "$UE_IP" > "$tcp_log_filename" 2>&1 &
+        iperf3 -c "$server_ip" -t 10 -u -b 500M -B "$UE_IP" -p "$port" > "$tcp_log_filename" 2>&1 &
     pids="$pids $!"
     echo "iPerf3 PID for UE$j: $!"
   done
