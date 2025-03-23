@@ -39,15 +39,21 @@ check_pods_running "app=ueransim,component=ue,name=ue1"
 kubectl apply -k ueransim/ueransim-ue/ue2 -n $namespace
 check_pods_running "app=ueransim,component=ue,name=ue2"
 
-sleep 2
+sleep 10
 mkdir -p "${directory_name}"
 # Resource monitoring for UPF
 resource_log_filename="${directory_name}/upf_resource_usage.log"
-for second in {1..600}; do
+for second in {1..150}; do
   echo "$(date +"%Y-%m-%d %H:%M:%S") - Monitoring cycle $second" >> "$resource_log_filename"
   kubectl top pod -n $namespace | grep "upf" >> "$resource_log_filename"
-  sleep 1
+  sleep 0.5
 done &
+
+kubectl apply -f test_upf/upf_subscriber_deployment.yaml  -n open5gs
+kubectl scale deployment upf-subscriber --replicas=3 -n open5gs
+check_pods_running "upf-subscriber"
+
+sleep 10
 
 # UE1: Throughput test
 ue_1=$(kubectl get pods -n $namespace -l "app=ueransim,component=ue,name=ue1" -o jsonpath='{.items[0].metadata.name}')
@@ -64,7 +70,7 @@ echo "Detected UE 1 IP from the UPF container: $UE_IP_1"
 
 tcp_log_filename="${directory_name}/iperf3_from_ue1.log"
 kubectl exec "$ue_1" -n "$namespace" -- \
-  iperf3 -c "$server_ip" -t 600 -u -b 195M -B "$UE_IP_1" > "$tcp_log_filename" 2>&1 &
+  iperf3 -c "$server_ip" -t 300 -u -b 4M -B "$UE_IP_1" > "$tcp_log_filename" 2>&1 &
 pids="$pids $!"
 
 # UE2: Ping test
@@ -75,7 +81,7 @@ echo "Detected UE 2 IP from the UPF container: $UE_IP_2"
 
 ping_log_filename="${directory_name}/ping_from_ue2.log"
 kubectl exec "$ue_2" -n "$namespace" -- \
-  bash -c "ping -I $UE_IP_2 -i 1 -w 600 $server_ip" > "$ping_log_filename" 2>&1 &
+  bash -c "ping -I $UE_IP_2 -i 1 -w 300 $server_ip" > "$ping_log_filename" 2>&1 &
 pids="$pids $!"
 
 echo "All UEs deployed incrementally and tests initiated."
