@@ -70,14 +70,14 @@ echo "Detected UE 1 IP from the UPF container: $UE_IP_1"
 
 tcp_log_filename="${directory_name}/iperf3_from_ue1.log"
 kubectl exec "$ue_1" -n "$namespace" -- \
-  iperf3 -c "$server_ip" -t 300 -u -b 4M -B "$UE_IP_1" > "$tcp_log_filename" 2>&1 &
+  iperf3 -c "$server_ip" -t 300 -u -b 12M -B "$UE_IP_1" > "$tcp_log_filename" 2>&1 &
 pids="$pids $!"
 
 # UE2: Ping test
 ue_2=$(kubectl get pods -n $namespace -l "app=ueransim,component=ue,name=ue2" -o jsonpath='{.items[0].metadata.name}')
 UE_IP_2=$(kubectl exec "$ue_2" -n "$namespace" -- bash -c \
   "ip -4 addr show $INTERFACE | grep -oP '(?<=inet\s)10\.42\.\d+\.\d+' | head -n 1")
-echo "Detected UE 2 IP from the UPF container: $UE_IP_2"
+echo "Detected UE 2 IP from the UPF container: $UE_IP_2" 
 
 ping_log_filename="${directory_name}/ping_from_ue2.log"
 kubectl exec "$ue_2" -n "$namespace" -- \
