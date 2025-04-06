@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fake-target
+  namespace: open5gs
+  labels:
+    app: fake-proxy
+spec:
+  replicas: 20
+  selector:
+    matchLabels:
+      app: fake-proxy
+  template:
+    metadata:
+      labels:
+        app: fake-proxy
+    spec:
+      containers:
+      - name: nc-server
+        image: alpine
+        command:
+          - /bin/sh
+          - -c
+          - |
+            while true; do
+              nc -l -p 8080 -e /bin/cat &
+              nc -l -p 8888 -e /bin/cat &
+              wait
+            done
+        ports:
+        - containerPort: 8080
+        - containerPort: 8888

@@ -7,7 +7,7 @@ mknod /dev/net/tun c 10 200
 # &
 # sleep 10 
 # START_TIME=$SECONDS 
-# END_TIME=$((START_TIME + 3600))
+# END_TIME=$((START_TIME + 120))
 # INTERFACE="uesimtun0"
 # UE_IP=$(ip -4 addr show "$INTERFACE" | grep -oP '(?<=inet\s)10\.42\.\d+\.\d+' | head -n 1)
 # if [ -z "$UE_IP" ]; then
@@ -16,7 +16,7 @@ mknod /dev/net/tun c 10 200
 # fi
 
 # while [ $SECONDS -lt $END_TIME ]; do
-#     cmd="ping -i 0.01 -I $UE_IP -c 3 google.ca"
+#     cmd="ping -i 1 -I $UE_IP -c 3 8.8.8.8"
 #     echo "Running: $cmd"
     
 #     result=$(eval "$cmd" 2>&1)
@@ -29,7 +29,7 @@ mknod /dev/net/tun c 10 200
 #         echo "Error: Command failed with status $status"
 #     fi
 
-#     sleep_time=0.3
+#     sleep_time=2
 #     sleep "$sleep_time"
 # done
 # tail -f /dev/null

@@ -42,7 +42,7 @@ wait_for_no_resources() {
 }
 
 # Loop over different iperf bandwidth values (in M)
-for M in 2 4 6 8 10 12 14 16 18 20 22 24 25 26 27 28 29 30; do
+for M in 100; do
     echo "----------------------"
     echo "Starting experiment with iperf bandwidth: ${M}M"
     echo "----------------------"
@@ -66,20 +66,9 @@ for M in 2 4 6 8 10 12 14 16 18 20 22 24 25 26 27 28 29 30; do
     sleep 10
     mkdir -p "${directory_name}/experiment_${M}"
     
-    # Start resource monitoring for UPF (runs in background)
-    resource_log_filename="${directory_name}/experiment_${M}/upf_resource_usage.log"
-    (
-      for second in {1..150}; do
-        echo "$(date +"%Y-%m-%d %H:%M:%S") - Monitoring cycle $second" >> "$resource_log_filename"
-        kubectl top pod -n "$namespace" | grep "upf" >> "$resource_log_filename"
-        sleep 0.5
-      done
-    ) &
-    monitor_pid=$!
-    
-    # Deploy UPF subscriber and scale it redo for 2 subscriber
+    # Deploy UPF subscriber and scale it redo for no subscriber no ees
     kubectl apply -f test_upf/upf_subscriber_deployment.yaml -n "$namespace"
-    kubectl scale deployment upf-subscriber --replicas=2 -n "$namespace"
+    # kubectl scale deployment upf-subscriber --replicas=3 -n "$namespace"
     check_pods_running "upf-subscriber"
     sleep 10
     
@@ -97,7 +86,7 @@ for M in 2 4 6 8 10 12 14 16 18 20 22 24 25 26 27 28 29 30; do
     
     tcp_log_filename="${directory_name}/experiment_${M}/iperf3_from_ue1.log"
     kubectl exec "$ue_1" -n "$namespace" -- \
-      iperf3 -c "$server_ip" -t 300 -u -b "${M}M" -B "$UE_IP_1" > "$tcp_log_filename" 2>&1 &
+      iperf3 -c "$server_ip" -t 60 -u -b "${M}M" -B "$UE_IP_1" > "$tcp_log_filename" 2>&1 &
     iperf_pid=$!
     
     # UE2: Ping test
@@ -107,8 +96,17 @@ for M in 2 4 6 8 10 12 14 16 18 20 22 24 25 26 27 28 29 30; do
     
     ping_log_filename="${directory_name}/experiment_${M}/ping_from_ue2.log"
     kubectl exec "$ue_2" -n "$namespace" -- \
-      bash -c "ping -I $UE_IP_2 -i 1 -w 300 $server_ip" > "$ping_log_filename" 2>&1 &
+      bash -c "ping -I $UE_IP_2 -i 1 -w 60 $server_ip" > "$ping_log_filename" 2>&1 &
     ping_pid=$!
+    resource_log_filename="${directory_name}/experiment_${M}/upf_resource_usage.log"
+    (
+      for second in {1..240}; do
+        echo "$(date +"%Y-%m-%d %H:%M:%S") - Monitoring cycle $second" >> "$resource_log_filename"
+        kubectl top pod -n "$namespace" | grep "upf2" >> "$resource_log_filename"
+        sleep 0.25
+      done
+    ) &
+    monitor_pid=$!
     
     echo "Experiment with ${M}M bandwidth initiated."
     
